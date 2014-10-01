@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" orientation="orthogonal" width="50" height="25" tilewidth="32" tileheight="32">
+ <tileset firstgid="1" name="mountain_landscape_23" tilewidth="32" tileheight="32">
+  <image source="mountain_landscape_23.png" width="512" height="512"/>
+ </tileset>
+ <layer name="Tile Layer 1" width="50" height="25">
+  <data encoding="base64" compression="zlib">
+   eJztlTEKACAMA/v/h/QNPs/JUaS1klgy3BjIGaFuZi6EEBtGAnTnXfdMFu2wuiDzlVug8gxbMDlke7A4VGyB7n/bhWmLqAfrzTh5MN+76Nuje7zc6Sc6eXT4W108hBD8THw/Ls4=
+  </data>
+ </layer>
+ <layer name="Unplaceable" width="50" height="25">
+  <data encoding="base64" compression="zlib">
+   eJzt170OAUEUhuEh6Al6gt5vj6XHrh7LHXAHXLd3kylkIpnZZIqzyfmSJ3OKKc6XTDM1Y0wdjYpqooU2Ouhii8SeMSXO7BN6r9i5hz4GGGKEE1J7xpQ6s0/ovWLnMSaYYoY5bsjtGVPuzD6h9xZYYuX0qFq0h6xoj/954hVhr7KJ3eONT4S9ykbflaxoD1nRHrKiPWRFe8iK9pCV3x5rbEz4316aHfY44GjC//bSZDjjgqsJ/9tLc8cDX1wwdy8=
+  </data>
+ </layer>
+</map>

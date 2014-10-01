@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" orientation="staggered" width="50" height="25" tilewidth="64" tileheight="32">
+ <tileset firstgid="1" name="isotiles" tilewidth="64" tileheight="64">
+  <image source="iso-64x64-outside.png" width="640" height="1024"/>
+ </tileset>
+ <layer name="Tile Layer 1" width="50" height="25">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAA+3PoREAIAwAsR4M1f03w6A5EFBERPx/i4gGAAAA8Fj/oKFSTtUdq67cVN28+jh1s2kANUgf+4gTAAA=
+  </data>
+ </layer>
+ <layer name="Unplaceable" width="50" height="25">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAA+2YQQoAIQwD+yv9/8sWD3uRLqVdKyFkIOChxcTcnGY2k7LCzi297Odo3pvtxPOaufeWzwqIniqgvm8W5cCDIQdLH8qBhXJgoRyiA5Y+GDIs1AcWLH2wgNLHCQ8j0D5zAu+PJvMn4+1EOb6y/fHfoQdmtC8FiBMAAA==
+  </data>
+ </layer>
+</map>

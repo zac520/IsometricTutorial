@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" orientation="orthogonal" width="50" height="25" tilewidth="20" tileheight="20">
+ <tileset firstgid="1" name="CLIFFVEG" tilewidth="20" tileheight="20">
+  <image source="../../../../../Downloads/2D Circle Graphic/CLIFFVEG.bmp" trans="ff00ff" width="640" height="480"/>
+ </tileset>
+ <tileset firstgid="769" name="TREE" tilewidth="20" tileheight="20">
+  <image source="../../../../../Downloads/2D Circle Graphic/TREE.GIF" trans="ff00ff" width="640" height="480"/>
+ </tileset>
+ <layer name="Tile Layer 1" width="50" height="25">
+  <data encoding="base64" compression="zlib">
+   eJztlN0NgCAMhOt4dRPcVTfRGZREk4YU/Ku0NTxcjsALd1/aEQCmTaNznzctP3DtHhuPxsOy38mNHUBfkBceR44ho/jmgUfY/5u7R0UuUn2EPQcqcZHsJWZJ83jjQZ1mqcXnq35SNjTTIe7NEo90bqjobuMyxbMlHiVO3M4O3bt9V3uvXJmrJ/NUm8eZ40MuFjhw8zTcnBPt/qVcu38p1+6x8Wg8LLt2j1K+AhHiDDI=
+  </data>
+ </layer>
+ <layer name="Unplaceable" width="50" height="25">
+  <data encoding="base64" compression="zlib">
+   eJzt1VlKQnEUx/G/2aRQ0LADh1JQUNuBQykoOOzAoRQUHPbQsJGGbaRCQUHDDlKhoKBhAX3BHv6El3t78PoP7oEPP7jnPJw/5+G6hBBueOCFD34pAwhOSL25afdDCCOCHUQRQxwJJJGSMo3MhNSbm3Y/ixzyKKCIEsqooIqalHU0JqTe3LT7TbTQRkeMq4se+uL/VNbGPZBHwTb+NsAQo1ku9sdqsnsLbXR+3mHdY3Zl9B5LdiGW4YDTPoNFdcroPbbYfRs++BV8h9F77LL7HpJIKfgOo/fYZ/cDVFFT8B1G73HI7kc4xomC7zB6j1N2P8M5LhR8h/X/UKuse6hV1j3Uqt/3uEQXPfRxhWspb3Arpdl9rbk73OMBj3jCAEOM8IwXKV/xJqXZfa25d3zgE1+wzwkxjwUswgGnlCtYldLsvtbcGtaxgU244IYHXvjglzKAoJRm97XmQggjgh1EEUMcCSSRkjKNjJRm97XmssghjwKKKKGMCqqoSVlHQ0qz+1pzTbTQRgffqKj7xA==
+  </data>
+ </layer>
+</map>
