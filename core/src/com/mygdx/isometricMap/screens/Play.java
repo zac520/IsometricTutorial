@@ -1,6 +1,7 @@
 package com.mygdx.isometricMap.screens;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -17,6 +18,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.mygdx.isometricMap.TiledMapStage;
 
 /**
  * Created by zac520 on 9/30/14.
@@ -28,14 +30,14 @@ public class Play implements Screen {
 
     private OrthographicCamera camera;
 
-    private Stage stage;
+    private TiledMapStage stage;
 
     private TextureAtlas atlas;
 
     private Image mapImage;
 
-    private int WINDOW_WIDTH = 240;
-    private int WINDOW_HEIGHT = 180;
+    private int WINDOW_WIDTH = 2400;
+    private int WINDOW_HEIGHT = 1800;
 
     private float originalZoomLevelX = 1;
     private float originalZoomLevelY = 1;
@@ -66,6 +68,7 @@ public class Play implements Screen {
         }
 
         //render the map
+        //this is silly, since we are using actors anyway... but they don't have the proper image assigned to them. just size
         renderer.setView(camera);
         renderer.render();
 
@@ -125,9 +128,14 @@ public class Play implements Screen {
         renderer = new OrthogonalTiledMapRenderer(map);
 
         //load the stage
-        stage = new Stage();
+        //stage = new Stage();
+        stage = new TiledMapStage(map);
         stage.getViewport().setCamera(camera);
-        Gdx.input.setInputProcessor(new GestureDetector(new MyGestureListener()));
+        //need a multiplexor so that the user can touch the level, or the user interface
+        InputMultiplexer multiplexer = new InputMultiplexer();
+        multiplexer.addProcessor(new GestureDetector(new MyGestureListener()));
+        multiplexer.addProcessor(stage);
+        Gdx.input.setInputProcessor(multiplexer);
 
 
         //get the atlas set up
