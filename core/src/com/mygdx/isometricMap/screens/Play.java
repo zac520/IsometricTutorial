@@ -10,21 +10,20 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.input.GestureDetector;
 import com.badlogic.gdx.maps.MapProperties;
 import com.badlogic.gdx.maps.tiled.TiledMap;
-import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
-import com.badlogic.gdx.maps.tiled.renderers.IsometricStaggeredTiledMapRenderer;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
-import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.mygdx.isometricMap.TiledMapStage;
+import com.mygdx.isometricMap.WorldAddition;
 
 /**
  * Created by zac520 on 9/30/14.
  */
 public class Play implements Screen {
 
+    public static final int BLOCK_SIZE = 32;
     private TiledMap map;
     private OrthogonalTiledMapRenderer renderer;
 
@@ -32,12 +31,12 @@ public class Play implements Screen {
 
     private TiledMapStage stage;
 
-    private TextureAtlas atlas;
+    public TextureAtlas atlas;
 
     private Image mapImage;
 
-    private int WINDOW_WIDTH = 2400;
-    private int WINDOW_HEIGHT = 1800;
+    private int WINDOW_WIDTH = 240;
+    private int WINDOW_HEIGHT = 180;
 
     private float originalZoomLevelX = 1;
     private float originalZoomLevelY = 1;
@@ -56,6 +55,9 @@ public class Play implements Screen {
 
     public boolean initialZoomTouchdown = true;
     private float currentCameraZoom = 1;
+
+    private boolean movingBlockBeyondBorders = false;
+    private WorldAddition additionSelected;
     @Override
     public void render(float delta) {
         Gdx.gl.glClearColor(0,0,0,1);
@@ -67,10 +69,26 @@ public class Play implements Screen {
           flingCamera();
         }
 
-        //render the map
-        //this is silly, since we are using actors anyway... but they don't have the proper image assigned to them. just size
-        renderer.setView(camera);
-        renderer.render();
+        if(movingBlockBeyondBorders){
+
+            System.out.println("moving");
+
+
+            //move the block
+            additionSelected.getGroup().setPosition(
+                    additionSelected.getGroup().getX() +  (additionSelected.getGroup().getX()  > camera.position.x ? 1:-1),
+                    additionSelected.getGroup().getY()+(additionSelected.getGroup().getY()  > camera.position.y ? 1:-1));
+
+            camera.position.set(
+                    camera.position.x + (additionSelected.getGroup().getX()  > camera.position.x  ? 1:-1),
+                    camera.position.y +(additionSelected.getGroup().getY()  > camera.position.y ? 1:-1) ,
+                    0
+            );
+
+
+
+            pushCameraBackIntoLimits();
+        }
 
         //render the stage
         stage.act();
@@ -120,7 +138,7 @@ public class Play implements Screen {
         //set the camera up
         camera = new OrthographicCamera();
         camera.setToOrtho(false, WINDOW_WIDTH, WINDOW_HEIGHT);
-        camera.position.set(200,100,0);
+        camera.position.set(200,200,0);
 
         //load the map
         TmxMapLoader loader = new TmxMapLoader();
@@ -142,8 +160,8 @@ public class Play implements Screen {
         atlas = new TextureAtlas(Gdx.files.internal("assets/Atlas/FirstLevel.txt"));
 
         //pull a random image from the atlas for now and add to stage
-        Image enemy = new Image(new TextureRegion(atlas.findRegion("Enemy1_Left1")));
-        stage.addActor(enemy);
+        WorldAddition enemy = new WorldAddition(this, new TextureRegion(atlas.findRegion("crate1")),BLOCK_SIZE*2,BLOCK_SIZE,6*BLOCK_SIZE,6*BLOCK_SIZE);
+        stage.addActor(enemy.getGroup());
 
         //set the limits of the camera
         setStageLimits();
@@ -205,11 +223,14 @@ public class Play implements Screen {
 
 
     class MyGestureListener implements GestureDetector.GestureListener {
+       //gesture listener x and y values are local to the screen. ie, in the middle of the world, still
+        //the x value will be 0 on the left, and the screen width value on the right.
         Vector3 newPosition;
+
         @Override
         public boolean touchDown(float x, float y, int pointer, int button) {
             initialZoomTouchdown = true;
-
+            flinging = false;
             return false;
         }
 
@@ -217,6 +238,7 @@ public class Play implements Screen {
         public boolean tap(float x, float y, int count, int button) {
 
 //            TiledMapTileLayer.Cell cell = layer.getCell(col, row);
+            //System.out.println("x: " + x);
 
 
             return false;
@@ -241,23 +263,66 @@ public class Play implements Screen {
         public boolean pan(float x, float y, float deltaX, float deltaY) {
 
 
-            //get the new position
-            newPosition = new Vector3(
-                    camera.position.x - (deltaX* currentZoomLevelX),
-                    camera.position.y + (deltaY* currentZoomLevelY),
-                    0
+            //if we aren't moving something, then pan the camera
+            if(additionSelected==null) {
+                //get the new position
+                newPosition = new Vector3(
+                        camera.position.x - (deltaX * currentZoomLevelX),
+                        camera.position.y + (deltaY * currentZoomLevelY),
+                        0
 
-            );
+                );
 
-            camera.position.set(newPosition);
-            pushCameraBackIntoLimits();
+                camera.position.set(newPosition);
+                pushCameraBackIntoLimits();
+            }
+
+            //if we are panning something, then move the something
+            else{
+
+                if(panItemBeyondBorder()){
+
+                    //with no motion, this block does not run. By setting this, we are going to
+                    //use the render loop to continue our moving while we are still
+                    movingBlockBeyondBorders = true;
+
+                    //also moving here, for when the user wants to stop moving by moving the item back
+                    additionSelected.getGroup().setPosition(
+                            additionSelected.getGroup().getX() + (deltaX * currentZoomLevelX),
+                            additionSelected.getGroup().getY() - (deltaY * currentZoomLevelY));
+                }
+                else {
+                    //no map panning needed, just move the item around
+                    movingBlockBeyondBorders = false;
+                    additionSelected.getGroup().setPosition(
+                            additionSelected.getGroup().getX() + (deltaX * currentZoomLevelX),
+                            additionSelected.getGroup().getY() - (deltaY * currentZoomLevelY));
+                }
+            }
+
             return false;
         }
-
+        private boolean panItemBeyondBorder(){
+            if(additionSelected.getGroup().getX() + additionSelected.getWidth() >10+ camera.position.x + (camera.viewportWidth *currentCameraZoom)/2){
+                return true;
+            }
+            if(additionSelected.getGroup().getX()  < -10 + camera.position.x - (camera.viewportWidth *currentCameraZoom)/2){
+                return true;
+            }
+            if(additionSelected.getGroup().getY()  < -10 + camera.position.y - (camera.viewportHeight *currentCameraZoom)/2){
+                return true;
+            }
+            if(additionSelected.getGroup().getY() + additionSelected.getHeight()  > 10 + camera.position.y + (camera.viewportHeight *currentCameraZoom)/2){
+                return true;
+            }
+            else{
+                return false;
+            }
+        }
         @Override
         public boolean panStop(float x, float y, int pointer, int button) {
-            //System.out.println("stopping panning");
-
+            System.out.println("stopping panning");
+            movingBlockBeyondBorders = false;
             return false;
         }
 
@@ -306,6 +371,30 @@ public class Play implements Screen {
         }
         else if(camera.position.y > y_top_limit){
             camera.position.y = y_top_limit;
+        }
+    }
+    public void selectEnemy(WorldAddition myAddition){
+
+        if(additionSelected !=null) {
+            if (additionSelected == myAddition) {//if the body is already selected, then we unselect.
+                additionSelected.toggleSelected();
+                additionSelected = null;
+                return;
+            } else {
+                //let the old body know we are unselecting it
+                additionSelected.toggleSelected();
+
+                //set it to the new enemy
+                additionSelected = myAddition;
+
+                //toggle the new enemy
+                additionSelected.toggleSelected();
+            }
+
+        }
+        else{
+            additionSelected = myAddition;
+            additionSelected.toggleSelected();
         }
     }
 }

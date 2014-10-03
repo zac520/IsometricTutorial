@@ -5,6 +5,8 @@ import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.scenes.scene2d.EventListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
+import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 
 /**
  * Created by zac520 on 10/1/14.
@@ -32,6 +34,7 @@ public class TiledMapStage extends Stage {
                 TiledMapActor actor = new TiledMapActor(tiledMap, tiledLayer, cell);
                 actor.setBounds(x * tiledLayer.getTileWidth(), y * tiledLayer.getTileHeight(), tiledLayer.getTileWidth(),
                         tiledLayer.getTileHeight());
+                actor.setDrawable(new TextureRegionDrawable(cell.getTile().getTextureRegion()));
                 addActor(actor);
                 EventListener eventListener = new TiledMapClickListener(actor);
                 actor.addListener(eventListener);

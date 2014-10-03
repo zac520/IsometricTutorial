@@ -3,11 +3,12 @@ package com.mygdx.isometricMap;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
 
 /**
  * Created by zac520 on 10/1/14.
  */
-public class TiledMapActor extends Actor {
+public class TiledMapActor extends Image {
 
     private TiledMap tiledMap;
 

@@ -4,400 +4,372 @@ filter: Linear,Linear
 repeat: none
 Arrowdownblue
   rotate: false
-  xy: 50, 2
+  xy: 698, 2
   size: 25, 40
   orig: 25, 40
   offset: 0, 0
   index: -1
 Arrowdowngreen
   rotate: false
-  xy: 77, 2
+  xy: 725, 2
   size: 25, 40
   orig: 25, 40
   offset: 0, 0
   index: -1
 Bagofmagic1
   rotate: false
-  xy: 2, 1244
+  xy: 454, 517
   size: 408, 353
   orig: 408, 353
   offset: 0, 0
   index: -1
 Chest1
   rotate: false
-  xy: 204, 76
+  xy: 1601, 2
   size: 97, 81
   orig: 97, 81
   offset: 0, 0
   index: 1
 Chestopen1
   rotate: false
-  xy: 303, 76
+  xy: 1807, 2
   size: 102, 95
   orig: 136, 95
   offset: 34, 0
   index: -1
 Controlpanelleftside
   rotate: false
-  xy: 407, 76
+  xy: 1700, 2
   size: 105, 94
   orig: 105, 94
   offset: 0, 0
   index: -1
 Controlpanelrightside
   rotate: false
-  xy: 1262, 2
+  xy: 935, 2
   size: 106, 59
   orig: 106, 59
   offset: 0, 0
   index: -1
 DinoCoin
   rotate: false
-  xy: 412, 1244
+  xy: 864, 517
   size: 434, 456
   orig: 434, 456
   offset: 0, 0
   index: -1
 Enemy1HPBar
   rotate: false
-  xy: 502, 324
+  xy: 2, 99
   size: 281, 106
   orig: 285, 106
   offset: 4, 0
   index: -1
 Enemy1_Left1
   rotate: false
-  xy: 836, 2
+  xy: 1322, 2
   size: 64, 71
   orig: 64, 71
   offset: 0, 0
   index: 1
 Enemy1_Left1
   rotate: false
-  xy: 1050, 2
-  size: 76, 70
+  xy: 1245, 2
+  size: 75, 70
   orig: 90, 70
-  offset: 14, 0
+  offset: 15, 0
   index: 2
 Enemy1_Left1
   rotate: false
-  xy: 836, 2
+  xy: 1322, 2
   size: 64, 71
   orig: 64, 71
   offset: 0, 0
   index: 3
 Enemy1_Left1
   rotate: false
-  xy: 902, 2
+  xy: 1388, 2
   size: 71, 71
   orig: 71, 71
   offset: 0, 0
   index: 4
 Enemy1_Left1
   rotate: false
-  xy: 103, 76
+  xy: 1144, 2
   size: 99, 67
   orig: 99, 67
   offset: 0, 0
   index: 5
 Enemy1_Right1
   rotate: false
-  xy: 771, 2
+  xy: 1461, 2
   size: 63, 71
   orig: 63, 71
   offset: 0, 0
   index: 1
 Enemy1_Right1
   rotate: false
-  xy: 1050, 2
-  size: 76, 70
+  xy: 1245, 2
+  size: 75, 70
   orig: 90, 70
-  offset: 14, 0
+  offset: 15, 0
   index: 2
 Enemy1_Right1
   rotate: false
-  xy: 771, 2
+  xy: 1461, 2
   size: 63, 71
   orig: 63, 71
   offset: 0, 0
   index: 3
 Enemy1_Right1
   rotate: false
-  xy: 975, 2
+  xy: 1526, 2
   size: 73, 72
   orig: 73, 72
   offset: 0, 0
   index: 4
 Enemy1_Right1
   rotate: false
-  xy: 2, 76
+  xy: 1043, 2
   size: 99, 66
   orig: 99, 66
   offset: 0, 0
   index: 5
 Enemy2_LV_1
   rotate: false
-  xy: 268, 566
+  xy: 693, 99
   size: 264, 176
   orig: 264, 176
   offset: 0, 0
   index: 1
 Enemy2_LV_1
   rotate: false
-  xy: 544, 744
+  xy: 273, 277
   size: 269, 193
   orig: 269, 193
   offset: 0, 0
   index: 2
 Enemy2_LV_1
   rotate: false
-  xy: 2, 744
+  xy: 1229, 99
   size: 269, 176
   orig: 269, 176
   offset: 0, 0
   index: 3
 Enemy2_LV_1
   rotate: false
-  xy: 804, 566
+  xy: 959, 99
   size: 268, 176
   orig: 268, 176
   offset: 0, 0
   index: 4
 Enemy2_RV_1
   rotate: false
-  xy: 2, 566
+  xy: 1500, 99
   size: 264, 176
   orig: 264, 176
   offset: 0, 0
   index: 1
 Enemy2_RV_1
   rotate: false
-  xy: 273, 744
+  xy: 544, 277
   size: 269, 193
   orig: 269, 193
   offset: 0, 0
   index: 2
 Enemy2_RV_1
   rotate: false
-  xy: 1074, 566
+  xy: 2, 277
   size: 269, 176
   orig: 269, 176
   offset: 0, 0
   index: 3
 Enemy2_RV_1
   rotate: false
-  xy: 534, 566
+  xy: 1766, 99
   size: 268, 176
   orig: 268, 176
   offset: 0, 0
   index: 4
 EnemyHPBar
   rotate: false
-  xy: 447, 2
+  xy: 374, 2
   size: 160, 19
   orig: 160, 19
   offset: 0, 0
   index: -1
 Fireball1
   rotate: false
-  xy: 2, 2
+  xy: 32, 2
   size: 16, 17
   orig: 16, 17
   offset: 0, 0
   index: 1
 Fireball1
   rotate: false
-  xy: 20, 2
+  xy: 629, 2
   size: 28, 29
   orig: 28, 29
   offset: 0, 0
   index: 2
 Fireball1
   rotate: false
-  xy: 104, 2
+  xy: 659, 2
   size: 37, 38
   orig: 37, 38
   offset: 0, 0
   index: 3
 Fireball1
   rotate: false
-  xy: 143, 2
+  xy: 886, 2
   size: 47, 46
   orig: 47, 46
   offset: 0, 0
   index: 4
+GreenTransparent
+  rotate: false
+  xy: 17, 2
+  size: 13, 13
+  orig: 13, 13
+  offset: 0, 0
+  index: -1
 Heart1
   rotate: false
-  xy: 848, 1244
+  xy: 1300, 517
   size: 452, 495
   orig: 452, 495
   offset: 0, 0
   index: -1
 HeroHPFillBar
   rotate: false
-  xy: 285, 2
+  xy: 50, 2
   size: 160, 18
   orig: 160, 18
   offset: 0, 0
   index: -1
 HeroHPMPInterface
   rotate: false
-  xy: 1039, 324
+  xy: 410, 99
   size: 281, 125
   orig: 281, 125
   offset: 0, 0
   index: -1
 HeroMPFillBar
   rotate: false
-  xy: 609, 2
+  xy: 212, 2
   size: 160, 19
   orig: 160, 19
   offset: 0, 0
   index: -1
 HerowSword_LV1
   rotate: false
-  xy: 639, 76
+  xy: 815, 277
   size: 82, 208
   orig: 82, 208
   offset: 0, 0
   index: 1
 HerowSword_LV1
   rotate: false
-  xy: 1185, 76
+  xy: 1768, 277
   size: 116, 238
   orig: 116, 238
   offset: 0, 0
   index: 2
 HerowSword_LV1
   rotate: false
-  xy: 987, 76
+  xy: 256, 517
   size: 96, 246
   orig: 96, 246
   offset: 0, 0
   index: 3
 HerowSword_LV1
   rotate: false
-  xy: 896, 76
+  xy: 1386, 277
   size: 89, 208
   orig: 89, 208
   offset: 0, 0
   index: 4
 HerowSword_RV1
   rotate: false
-  xy: 723, 76
+  xy: 1302, 277
   size: 82, 208
   orig: 82, 208
   offset: 0, 0
   index: 1
 HerowSword_RV1
   rotate: false
-  xy: 1303, 76
+  xy: 1886, 277
   size: 116, 238
   orig: 116, 238
   offset: 0, 0
   index: 2
 HerowSword_RV1
   rotate: false
-  xy: 1085, 76
+  xy: 354, 517
   size: 98, 246
   orig: 98, 246
   offset: 0, 0
   index: 3
 HerowSword_RV1
   rotate: false
-  xy: 807, 76
+  xy: 1213, 277
   size: 87, 208
   orig: 87, 208
   offset: 0, 0
   index: 4
-Jumpbutton
+RedTransparent
   rotate: false
-  xy: 252, 324
-  size: 248, 118
-  orig: 248, 118
+  xy: 2, 2
+  size: 13, 13
+  orig: 13, 13
   offset: 0, 0
-  index: 1
-SelectedJumpbutton
-  rotate: false
-  xy: 2, 324
-  size: 248, 118
-  orig: 248, 118
-  offset: 0, 0
-  index: 1
-Selectedswordattackbutton
-  rotate: false
-  xy: 953, 954
-  size: 314, 288
-  orig: 314, 288
-  offset: 0, 0
-  index: 1
+  index: -1
 crate1
   rotate: false
-  xy: 514, 76
+  xy: 285, 99
   size: 123, 122
   orig: 123, 122
   offset: 0, 0
   index: -1
 hero_slashing_left
   rotate: false
-  xy: 1106, 744
+  xy: 899, 277
   size: 312, 208
   orig: 312, 208
   offset: 0, 0
   index: 1
 hero_slashing_right
   rotate: false
-  xy: 815, 744
+  xy: 1477, 277
   size: 289, 208
   orig: 289, 208
   offset: 0, 0
   index: 1
 herowithswordFront1
   rotate: false
-  xy: 785, 324
+  xy: 2, 517
   size: 125, 239
   orig: 125, 239
   offset: 0, 0
   index: 1
 herowithswordFront1
   rotate: false
-  xy: 912, 324
+  xy: 129, 517
   size: 125, 240
   orig: 125, 240
   offset: 0, 0
   index: 2
-magicattackbutton
-  rotate: false
-  xy: 317, 954
-  size: 316, 285
-  orig: 316, 285
-  offset: 0, 0
-  index: 1
-selectedmagicattackbutton
-  rotate: false
-  xy: 635, 954
-  size: 316, 286
-  orig: 316, 286
-  offset: 0, 0
-  index: 1
 spikes1
   rotate: false
-  xy: 192, 2
+  xy: 536, 2
   size: 91, 26
   orig: 91, 26
   offset: 0, 0
   index: -1
 sword1
   rotate: false
-  xy: 1128, 2
+  xy: 752, 2
   size: 132, 41
   orig: 132, 41
   offset: 0, 0
   index: -1
-swordattackbutton
-  rotate: false
-  xy: 2, 954
-  size: 313, 285
-  orig: 313, 285
-  offset: 0, 0
-  index: 1
