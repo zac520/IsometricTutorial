@@ -84,38 +84,31 @@ public class Play implements Screen {
             }
 
             //check and see if the box is placeable at that location
-            try {
-                Vector2 myVector = new Vector2(
-                        (int)additionSelected.getGroup().getX(),
-                        (int)additionSelected.getGroup().getY());
-
-                //if we are holding "true" in the actor we hit, then it is placeable
-               if((Boolean)stage.hit(myVector.x,myVector.y, false).getUserObject()==true){
-                   //System.out.println("totally placeable");
-                   additionSelected.getGroup().getChildren().get(0).setColor(Color.GREEN);
-
-               }
-               else{
-                   //System.out.println("not at all placeable");
-//                   myVector = new Vector2( myVector.x, -myVector.y);
-//
-//                   System.out.println("x: " + (int)additionSelected.getGroup().stageToLocalCoordinates(myVector).x +
-//                           " y: " + (int)additionSelected.getGroup().stageToLocalCoordinates(myVector).y);
-//                   additionSelected.getGroup().hit(
-//                           (int)additionSelected.getGroup().stageToLocalCoordinates(myVector).x,
-//                           (int)additionSelected.getGroup().stageToLocalCoordinates(myVector).y ,
-//                           false).setColor(Color.RED);
-                   System.out.println(additionSelected.getGroup().getChildren().get(0).getX());
-                   System.out.println(additionSelected.getGroup().getChildren().get(0).getY());
+            for(int x = 0; x< additionSelected.getGroup().getChildren().size -1; x++) {
+                try {
+                    Vector2 myVector = new Vector2(
+                            additionSelected.getGroup().getChildren().get(x).getX(),
+                            additionSelected.getGroup().getChildren().get(x).getY());
 
 
-               }
+                    //if we are holding "true" in the actor we hit, then it is placeable
+                    if ((Boolean) stage.hit(
+                            (int) additionSelected.getGroup().localToStageCoordinates(myVector).x,
+                            (int) additionSelected.getGroup().localToStageCoordinates(myVector).y,
+                            false)
+                            .getUserObject() == true) {
+                        additionSelected.getGroup().getChildren().get(x).setColor(Color.GREEN);
 
+                    } else {
+
+                        additionSelected.getGroup().getChildren().get(x).setColor(Color.RED);
+
+                    }
+
+                } catch (Exception e) {
+
+                }
             }
-            catch (Exception e){
-
-            }
-
         }
 
         //render the stage
