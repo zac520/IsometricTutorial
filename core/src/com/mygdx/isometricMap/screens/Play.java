@@ -3,6 +3,7 @@ package com.mygdx.isometricMap.screens;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
@@ -14,6 +15,8 @@ import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.mygdx.isometricMap.TiledMapStage;
 import com.mygdx.isometricMap.WorldAddition;
@@ -58,6 +61,9 @@ public class Play implements Screen {
 
     private boolean movingBlockBeyondBorders = false;
     private WorldAddition additionSelected;
+
+    public boolean blockAvailability [][];
+
     @Override
     public void render(float delta) {
         Gdx.gl.glClearColor(0,0,0,1);
@@ -69,25 +75,47 @@ public class Play implements Screen {
           flingCamera();
         }
 
-        if(movingBlockBeyondBorders){
-
-            System.out.println("moving");
 
 
-            //move the block
-            additionSelected.getGroup().setPosition(
-                    additionSelected.getGroup().getX() +  (additionSelected.getGroup().getX()  > camera.position.x ? 1:-1),
-                    additionSelected.getGroup().getY()+(additionSelected.getGroup().getY()  > camera.position.y ? 1:-1));
+        if(additionSelected!=null){
+            //move the block and scroll screen at the same time
+            if(movingBlockBeyondBorders){
+                controlItemMovementBeyondBorders();
+            }
 
-            camera.position.set(
-                    camera.position.x + (additionSelected.getGroup().getX()  > camera.position.x  ? 1:-1),
-                    camera.position.y +(additionSelected.getGroup().getY()  > camera.position.y ? 1:-1) ,
-                    0
-            );
+            //check and see if the box is placeable at that location
+            try {
+                Vector2 myVector = new Vector2(
+                        (int)additionSelected.getGroup().getX(),
+                        (int)additionSelected.getGroup().getY());
+
+                //if we are holding "true" in the actor we hit, then it is placeable
+               if((Boolean)stage.hit(myVector.x,myVector.y, false).getUserObject()==true){
+                   //System.out.println("totally placeable");
+                   additionSelected.getGroup().getChildren().get(0).setColor(Color.GREEN);
+
+               }
+               else{
+                   //System.out.println("not at all placeable");
+//                   myVector = new Vector2( myVector.x, -myVector.y);
+//
+//                   System.out.println("x: " + (int)additionSelected.getGroup().stageToLocalCoordinates(myVector).x +
+//                           " y: " + (int)additionSelected.getGroup().stageToLocalCoordinates(myVector).y);
+//                   additionSelected.getGroup().hit(
+//                           (int)additionSelected.getGroup().stageToLocalCoordinates(myVector).x,
+//                           (int)additionSelected.getGroup().stageToLocalCoordinates(myVector).y ,
+//                           false).setColor(Color.RED);
+                   System.out.println(additionSelected.getGroup().getChildren().get(0).getX());
+                   System.out.println(additionSelected.getGroup().getChildren().get(0).getY());
 
 
+               }
 
-            pushCameraBackIntoLimits();
+            }
+            catch (Exception e){
+
+            }
+
         }
 
         //render the stage
@@ -96,6 +124,24 @@ public class Play implements Screen {
 
     }
 
+    private void controlItemMovementBeyondBorders(){
+        //move the block
+        additionSelected.getGroup().setPosition(
+                additionSelected.getGroup().getX() +  ((additionSelected.getGroup().getX() - camera.position.x) /50),
+                additionSelected.getGroup().getY()+((additionSelected.getGroup().getY()  - camera.position.y)/50));
+
+        camera.position.set(
+                camera.position.x + ((additionSelected.getGroup().getX() - camera.position.x) /50),
+                camera.position.y +((additionSelected.getGroup().getY()  - camera.position.y)/50) ,
+                0
+        );
+
+
+
+        pushCameraBackIntoLimits();
+        pushItemBackIntoLimits();
+
+    }
     private void flingCamera(){
         velX *= 0.95f;
         velY *= 0.95f;
@@ -298,6 +344,7 @@ public class Play implements Screen {
                             additionSelected.getGroup().getX() + (deltaX * currentZoomLevelX),
                             additionSelected.getGroup().getY() - (deltaY * currentZoomLevelY));
                 }
+                pushItemBackIntoLimits();
             }
 
             return false;
@@ -312,7 +359,7 @@ public class Play implements Screen {
             if(additionSelected.getGroup().getY()  < -10 + camera.position.y - (camera.viewportHeight *currentCameraZoom)/2){
                 return true;
             }
-            if(additionSelected.getGroup().getY() + additionSelected.getHeight()  > 10 + camera.position.y + (camera.viewportHeight *currentCameraZoom)/2){
+            if(additionSelected.getGroup().getY() + additionSelected.getHeight()  > camera.position.y + (camera.viewportHeight *currentCameraZoom)/2){
                 return true;
             }
             else{
@@ -371,6 +418,23 @@ public class Play implements Screen {
         }
         else if(camera.position.y > y_top_limit){
             camera.position.y = y_top_limit;
+        }
+    }
+    private void pushItemBackIntoLimits(){
+
+
+
+        if(additionSelected.getGroup().getX() < x_left_limit - (camera.viewportWidth *camera.zoom)/2){
+            additionSelected.getGroup().setX(x_left_limit - (camera.viewportWidth *camera.zoom)/2);
+        }
+        else if(additionSelected.getGroup().getX() + additionSelected.getWidth() > x_right_limit +(camera.viewportWidth*camera.zoom) / 2){
+            additionSelected.getGroup().setX(x_right_limit +((camera.viewportWidth*camera.zoom) / 2) - additionSelected.getWidth());
+        }
+        if(additionSelected.getGroup().getY() < y_bottom_limit-(camera.viewportHeight*camera.zoom) / 2){
+            additionSelected.getGroup().setY(y_bottom_limit-(camera.viewportHeight*camera.zoom) / 2);
+        }
+        else if(additionSelected.getGroup().getY() + additionSelected.getHeight() > y_top_limit+(camera.viewportHeight*camera.zoom) /2){
+            additionSelected.getGroup().setY(y_top_limit+((camera.viewportHeight*camera.zoom) /2)- additionSelected.getHeight()) ;
         }
     }
     public void selectEnemy(WorldAddition myAddition){
