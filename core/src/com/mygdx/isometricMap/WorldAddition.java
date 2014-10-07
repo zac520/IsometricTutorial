@@ -10,6 +10,7 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
+import com.badlogic.gdx.utils.Timer;
 import com.mygdx.isometricMap.screens.Play;
 
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.forever;
@@ -26,10 +27,10 @@ public class WorldAddition extends Image {
     public Group graphicsGroup;//used to link in the arrow later
 
     Image [][] transparentBoxImages;
-    Play play;
+    Play game;
     WorldAddition worldAddition;
     public WorldAddition(Play myPlay, TextureRegion textureRegion, int width, int height, int x, int y){
-        play = myPlay;
+        game = myPlay;
 
         this.setDrawable(new TextureRegionDrawable(textureRegion));
         this.setSize(width, height);
@@ -48,7 +49,7 @@ public class WorldAddition extends Image {
         this.addListener(new ClickListener() {
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
 
-                play.selectEnemy(worldAddition);
+                game.selectEnemy(worldAddition);
                 return true;
             }
         });
@@ -61,16 +62,15 @@ public class WorldAddition extends Image {
 //TODO need to make this so that there are as many boxes as the image covers. Going to bed now
         //toggle the selected enemy
         if(!selected) {
-            System.out.println("selecting");
-
-
+            this.graphicsGroup.toFront();
+//            System.out.println("selecting");
             transparentBoxImages = new Image[(int)this.getWidth()/32][(int) this.getHeight()/32];
             //add the box to the proper position for each row this world addition covers
-            for(int x = 0; x< this.getWidth() / play.BLOCK_SIZE; x++){
-                for(int y = 0; y<this.getHeight()/play.BLOCK_SIZE;y++){
-                    Image nextImage = new Image(new TextureRegion(play.atlas.findRegion("GreenTransparent")));
-                    nextImage.setSize(play.BLOCK_SIZE, play.BLOCK_SIZE);
-                    nextImage.setPosition(this.getX() + (x * play.BLOCK_SIZE), this.getY() + (y * play.BLOCK_SIZE));
+            for(int x = 0; x< this.getWidth() / game.BLOCK_SIZE; x++){
+                for(int y = 0; y<this.getHeight()/game.BLOCK_SIZE;y++){
+                    Image nextImage = new Image(new TextureRegion(game.atlas.findRegion("GreenTransparent")));
+                    nextImage.setSize(game.BLOCK_SIZE, game.BLOCK_SIZE);
+                    nextImage.setPosition(this.getX() + (x * game.BLOCK_SIZE), this.getY() + (y * game.BLOCK_SIZE));
 
                     graphicsGroup.addActorBefore(this, nextImage);
                     transparentBoxImages[x][y]= nextImage;
@@ -87,14 +87,27 @@ public class WorldAddition extends Image {
             //put the item back down
             this.setY(this.getY() - 10);
 
-            for(int x = 0; x< this.getWidth() / play.BLOCK_SIZE; x++){
-                for(int y = 0; y<this.getHeight()/play.BLOCK_SIZE;y++){
+            for(int x = 0; x< this.getWidth() / game.BLOCK_SIZE; x++){
+                for(int y = 0; y<this.getHeight()/game.BLOCK_SIZE;y++){
                     graphicsGroup.removeActor(transparentBoxImages[x][y]);
 
                 }
             }
 
+
             selected = false;
+
+            //if we can't place it there, then we will just run everything again
+            if(!game.placeable){
+                Timer.schedule(new Timer.Task(){
+                @Override
+                public void run() {
+                    game.selectEnemy(worldAddition);
+                }
+            }, 0.1f);
+            }
+
+
         }
     }
 }

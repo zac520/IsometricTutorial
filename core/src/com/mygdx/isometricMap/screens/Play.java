@@ -67,8 +67,9 @@ public class Play implements Screen {
 
     private boolean movingBlockBeyondBorders = false;
     private WorldAddition additionSelected;
-
-
+    private Actor testActor;
+    private Actor controlActor;
+    public boolean placeable = true;
     @Override
     public void render(float delta) {
         Gdx.gl.glClearColor(0,0,0,1);
@@ -88,33 +89,35 @@ public class Play implements Screen {
                 controlItemMovementBeyondBorders();
             }
 
+            //reset placeability
+            placeable = true;
+
             //check and see if the box is placeable at that location
             for(int x = 0; x< additionSelected.getGroup().getChildren().size -1; x++) {
-                try {
-                    //grab each of the boxes under the actor and check their position
-                    Vector2 myVector = new Vector2(
-                            additionSelected.getGroup().getChildren().get(x).getX(),
-                            additionSelected.getGroup().getChildren().get(x).getY());
-                    myVector = additionSelected.getGroup().localToStageCoordinates(myVector);
-                    System.out.println(myVector);
-                    //if we are holding "true" in the actor we hit, then it is placeable
-                    if ((Boolean) stage.hit(
-                            (int) myVector.x,
-                            (int) myVector.y,
-                            false)
-                            .getUserObject() == true) {
-                        additionSelected.getGroup().getChildren().get(x).setColor(Color.GREEN);
+                System.out.println("doing this");
+                controlActor = additionSelected.getGroup().getChildren().get(x);
+                Vector2 myVector = new Vector2(controlActor.getX(), controlActor.getY());
 
-                    } else {
+                //convert coordinates to the stage's coordinates
+                myVector = additionSelected.getGroup().localToStageCoordinates(myVector);
 
-                        additionSelected.getGroup().getChildren().get(x).setColor(Color.RED);
-
-                    }
-
-                } catch (Exception e) {
+                //test each of the four corners of the box
+                if(
+                (testForPlacement((int)myVector.x, (int)myVector.y) ==false)||
+                (testForPlacement((int)myVector.x + (int) controlActor.getWidth(), (int)myVector.y) ==false)||
+                (testForPlacement((int)myVector.x, (int)myVector.y + (int) controlActor.getHeight() ) ==false)||
+                (testForPlacement((int)myVector.x+ (int) controlActor.getWidth(), (int)myVector.y + (int) controlActor.getHeight()) ==false)
+                ){
+                    additionSelected.getGroup().getChildren().get(x).setColor(Color.RED);
+                    placeable = false;
+                }
+                else {
+                    additionSelected.getGroup().getChildren().get(x).setColor(Color.GREEN);
 
                 }
+
             }
+
         }
 
         //render the stage
@@ -125,44 +128,34 @@ public class Play implements Screen {
         userInterfaceStage.act(delta);
         userInterfaceStage.draw();
     }
-    private void addScrollStuff(){
 
-        String reallyLongString = "This\nIs\nA\nReally\nLong\nString\nThat\nHas\nLots\nOf\nLines\nAnd\nRepeats.\n"
-                + "This\nIs\nA\nReally\nLong\nString\nThat\nHas\nLots\nOf\nLines\nAnd\nRepeats.\n"
-                + "This\nIs\nA\nReally\nLong\nString\nThat\nHas\nLots\nOf\nLines\nAnd\nRepeats.\n";
 
-        final Skin skin = new Skin(Gdx.files.internal("assets/ui/defaultskin.json"));
 
-        final Label text = new Label(reallyLongString, skin);
-        text.setAlignment(Align.center);
-        text.setWrap(true);
-        final Label text2 = new Label("This is a short string!", skin);
-        text2.setAlignment(Align.center);
-        text2.setWrap(true);
-        final Label text3 = new Label(reallyLongString, skin);
-        text3.setAlignment(Align.center);
-        text3.setWrap(true);
+    private boolean testForPlacement(int x, int y){
+        testActor = stage.hit(x,y,false);
 
-        final Table scrollTable = new Table();
-        scrollTable.add(text);
-        scrollTable.row();
-        scrollTable.add(text2);
-        scrollTable.row();
-        scrollTable.add(text3);
-        scrollTable.setColor(Color.MAGENTA);
-        scrollTable.setCenterPosition(0,0);
+        //if we can't read it, just try again next time. This could cause mis-placement very rarely, but
+        //looks better
+        if((testActor == null) || (testActor.getUserObject() instanceof Boolean == false)){
+            //if it is an addition, then we cannot place no matter what
+            if(testActor.getUserObject() instanceof WorldAddition){
+                //TODO the coordinates are wrong to test for a hit in the stage. We need a new function specifically for this
+                return false;
+            }
+            //otherwise it's probably an error. Return true to avoid crashing.
+            return true;
+        }
 
-        final ScrollPane scroller = new ScrollPane(scrollTable);
-        scroller.setCenterPosition(0,0);
+        //if it is "true" then it is placeable we are setting the block green. else, red.
+        if ((Boolean) testActor.getUserObject() == true) {
+            //additionSelected.getGroup().getChildren().get(x).setColor(Color.GREEN);
+            return true;
 
-        final Table table = new Table();
-        table.setFillParent(true);
-        table.add(scroller).fill().expand();
+        } else {
+            return false;
+            //additionSelected.getGroup().getChildren().get(x).setColor(Color.RED);
 
-        //for now, we are manually setting the location oddly like this
-        table.setPosition(table.getX() - 300, table.getY() - 100);
-
-        userInterfaceStage.addActor(table);
+        }
     }
     private void controlItemMovementBeyondBorders(){
         //move the block
@@ -243,6 +236,9 @@ public class Play implements Screen {
         //pull a random image from the atlas for now and add to stage
         WorldAddition enemy = new WorldAddition(this, new TextureRegion(atlas.findRegion("crate1")),BLOCK_SIZE*2,BLOCK_SIZE,6*BLOCK_SIZE,6*BLOCK_SIZE);
         stage.addActor(enemy.getGroup());
+
+        WorldAddition enemy2 = new WorldAddition(this, new TextureRegion(atlas.findRegion("crate1")),BLOCK_SIZE*2,BLOCK_SIZE,9*BLOCK_SIZE,9*BLOCK_SIZE);
+        stage.addActor(enemy2.getGroup());
 
         //set the limits of the camera
         setStageLimits();
