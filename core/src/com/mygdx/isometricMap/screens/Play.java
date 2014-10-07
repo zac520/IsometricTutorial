@@ -13,11 +13,14 @@ import com.badlogic.gdx.maps.MapProperties;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.scenes.scene2d.ui.*;
+import com.badlogic.gdx.scenes.scene2d.utils.Align;
+import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.mygdx.isometricMap.TiledMapStage;
 import com.mygdx.isometricMap.WorldAddition;
 
@@ -31,8 +34,11 @@ public class Play implements Screen {
     private OrthogonalTiledMapRenderer renderer;
 
     private OrthographicCamera camera;
+    private OrthographicCamera userInterfaceCam;
+
 
     private TiledMapStage stage;
+    private Stage userInterfaceStage;
 
     public TextureAtlas atlas;
 
@@ -62,7 +68,6 @@ public class Play implements Screen {
     private boolean movingBlockBeyondBorders = false;
     private WorldAddition additionSelected;
 
-    public boolean blockAvailability [][];
 
     @Override
     public void render(float delta) {
@@ -86,15 +91,16 @@ public class Play implements Screen {
             //check and see if the box is placeable at that location
             for(int x = 0; x< additionSelected.getGroup().getChildren().size -1; x++) {
                 try {
+                    //grab each of the boxes under the actor and check their position
                     Vector2 myVector = new Vector2(
                             additionSelected.getGroup().getChildren().get(x).getX(),
                             additionSelected.getGroup().getChildren().get(x).getY());
-
-
+                    myVector = additionSelected.getGroup().localToStageCoordinates(myVector);
+                    System.out.println(myVector);
                     //if we are holding "true" in the actor we hit, then it is placeable
                     if ((Boolean) stage.hit(
-                            (int) additionSelected.getGroup().localToStageCoordinates(myVector).x,
-                            (int) additionSelected.getGroup().localToStageCoordinates(myVector).y,
+                            (int) myVector.x,
+                            (int) myVector.y,
                             false)
                             .getUserObject() == true) {
                         additionSelected.getGroup().getChildren().get(x).setColor(Color.GREEN);
@@ -115,8 +121,49 @@ public class Play implements Screen {
         stage.act();
         stage.draw();
 
+        //render the UI stage
+        userInterfaceStage.act(delta);
+        userInterfaceStage.draw();
     }
+    private void addScrollStuff(){
 
+        String reallyLongString = "This\nIs\nA\nReally\nLong\nString\nThat\nHas\nLots\nOf\nLines\nAnd\nRepeats.\n"
+                + "This\nIs\nA\nReally\nLong\nString\nThat\nHas\nLots\nOf\nLines\nAnd\nRepeats.\n"
+                + "This\nIs\nA\nReally\nLong\nString\nThat\nHas\nLots\nOf\nLines\nAnd\nRepeats.\n";
+
+        final Skin skin = new Skin(Gdx.files.internal("assets/ui/defaultskin.json"));
+
+        final Label text = new Label(reallyLongString, skin);
+        text.setAlignment(Align.center);
+        text.setWrap(true);
+        final Label text2 = new Label("This is a short string!", skin);
+        text2.setAlignment(Align.center);
+        text2.setWrap(true);
+        final Label text3 = new Label(reallyLongString, skin);
+        text3.setAlignment(Align.center);
+        text3.setWrap(true);
+
+        final Table scrollTable = new Table();
+        scrollTable.add(text);
+        scrollTable.row();
+        scrollTable.add(text2);
+        scrollTable.row();
+        scrollTable.add(text3);
+        scrollTable.setColor(Color.MAGENTA);
+        scrollTable.setCenterPosition(0,0);
+
+        final ScrollPane scroller = new ScrollPane(scrollTable);
+        scroller.setCenterPosition(0,0);
+
+        final Table table = new Table();
+        table.setFillParent(true);
+        table.add(scroller).fill().expand();
+
+        //for now, we are manually setting the location oddly like this
+        table.setPosition(table.getX() - 300, table.getY() - 100);
+
+        userInterfaceStage.addActor(table);
+    }
     private void controlItemMovementBeyondBorders(){
         //move the block
         additionSelected.getGroup().setPosition(
@@ -188,11 +235,6 @@ public class Play implements Screen {
         //stage = new Stage();
         stage = new TiledMapStage(map);
         stage.getViewport().setCamera(camera);
-        //need a multiplexor so that the user can touch the level, or the user interface
-        InputMultiplexer multiplexer = new InputMultiplexer();
-        multiplexer.addProcessor(new GestureDetector(new MyGestureListener()));
-        multiplexer.addProcessor(stage);
-        Gdx.input.setInputProcessor(multiplexer);
 
 
         //get the atlas set up
@@ -206,6 +248,21 @@ public class Play implements Screen {
         setStageLimits();
 
 
+        //create the HUD
+        //set up the UI cam with its own separate stage
+        userInterfaceCam=new OrthographicCamera();
+        userInterfaceCam.setToOrtho(false, WINDOW_WIDTH, WINDOW_HEIGHT);
+        userInterfaceStage=new UserInterface(this);
+        userInterfaceStage.getViewport().setCamera(userInterfaceCam);
+        //////////////////
+
+        //need a multiplexor so that the user can touch the level, or the user interface
+        InputMultiplexer multiplexer = new InputMultiplexer();
+        multiplexer.addProcessor(userInterfaceStage);
+        multiplexer.addProcessor(new GestureDetector(new MyGestureListener()));
+        multiplexer.addProcessor(stage);
+        Gdx.input.setInputProcessor(multiplexer);
+//        addScrollStuff();
 
     }
 
